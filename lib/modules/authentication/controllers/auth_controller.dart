@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
+import 'package:tamplate_getx/core/constants/auth_mapper.dart';
+import 'package:tamplate_getx/data/models/user_model.dart';
+import 'package:tamplate_getx/services/isar_service.dart';
 import 'package:tamplate_getx/services/storage_service.dart';
+
 import '../../../data/repositories/auth_repository.dart';
 
 class AuthController extends GetxController {
@@ -15,13 +19,18 @@ class AuthController extends GetxController {
       isLoading.value = true;
 
       final tokens = await repository.login(email: email, password: password);
-      print("LOGIN RESPONSE: $tokens");
 
       await storage.saveTokens(tokens.accessToken, tokens.refreshToken);
 
-      Get.snackbar("Success", 'Berhasil Login 122312321');
+      final user = toUserModel(tokens);
+
+      await IsarService.isar.writeTxn(() async {
+        await IsarService.isar.userModels.put(user);
+      });
+
+      Get.offAllNamed('/home');
     } catch (e) {
-      print("ssLogin error: $e");
+      print(e);
       Get.snackbar("Error", e.toString());
     } finally {
       isLoading.value = false;
@@ -30,6 +39,9 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     await storage.clear();
+    await IsarService.isar.writeTxn(() async {
+      await IsarService.isar.clear();
+    });
     Get.offAllNamed('/login');
   }
 }

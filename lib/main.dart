@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tamplate_getx/modules/authentication/screens/auth_screen.dart';
+import 'package:tamplate_getx/modules/home/bindings/home_binding.dart';
+import 'package:tamplate_getx/modules/home/screens/home_screen.dart';
+import 'package:tamplate_getx/services/isar_service.dart';
 import 'modules/authentication/bindings/auth_binding.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await IsarService.init();
+
   runApp(const MyApp());
 }
 
@@ -20,6 +27,11 @@ class MyApp extends StatelessWidget {
           name: '/login',
           page: () => AuthScreen(),
           binding: AuthBinding(),
+        ),
+        GetPage(
+          name: '/home',
+          page: () => HomeScreen(),
+          binding: HomeBinding(),
         ),
       ],
     );
