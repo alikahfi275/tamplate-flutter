@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:tamplate_getx/modules/authentication/screens/auth_screen.dart';
 import 'package:tamplate_getx/modules/home/bindings/home_binding.dart';
 import 'package:tamplate_getx/modules/home/screens/home_screen.dart';
+import 'package:tamplate_getx/modules/profile/bindings/profile_binding.dart';
+import 'package:tamplate_getx/modules/profile/screens/profile_screen.dart';
 import 'package:tamplate_getx/services/isar_service.dart';
 import 'modules/authentication/bindings/auth_binding.dart';
 
@@ -32,6 +34,11 @@ class MyApp extends StatelessWidget {
           name: '/home',
           page: () => HomeScreen(),
           binding: HomeBinding(),
+        ),
+        GetPage(
+          name: '/profile',
+          page: () => ProfileScreen(),
+          binding: ProfileBinding(),
         ),
       ],
     );

@@ -17,12 +17,8 @@ class AuthProvider {
     return response.data;
   }
 
-  Future<Map<String, dynamic>> postRefresh(String refreshToken) async {
-    final response = await dioService.dio.post(
-      "/auth/refresh",
-      data: {"refreshToken": refreshToken},
-    );
-
+  Future<Map<String, dynamic>> getProfile() async {
+    final response = await dioService.dio.get("/auth/me");
     return response.data;
   }
 }

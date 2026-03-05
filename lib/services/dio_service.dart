@@ -75,11 +75,11 @@ class DioService extends GetxService {
 
             final response = await refreshDio.post(
               "/auth/refresh",
-              data: {"refresh_token": refreshToken},
+              data: {"refreshToken": refreshToken, "expiresInMins": 1},
             );
 
-            final newAccess = response.data["access_token"];
-            final newRefresh = response.data["refresh_token"];
+            final newAccess = response.data["accessToken"];
+            final newRefresh = response.data["refreshToken"];
 
             /// Simpan token baru
             await storage.saveTokens(newAccess, newRefresh);

@@ -9,6 +9,10 @@ class HomeScreen extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Home")),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.account_circle),
+        onPressed: () => Get.toNamed('/profile'),
+      ),
 
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -32,6 +36,10 @@ class HomeScreen extends GetView<HomeController> {
               Text("Name: ${user.firstName} ${user.lastName}"),
 
               Text("Name: ${controller.accessToken.value}"),
+
+              Text("===================================="),
+
+              Text("Name: ${controller.refreshToken.value}"),
 
               Text("Name: ${user.firstName} ${user.lastName}"),
             ],

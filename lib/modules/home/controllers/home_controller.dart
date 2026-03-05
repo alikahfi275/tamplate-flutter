@@ -10,6 +10,7 @@ class HomeController extends GetxController {
   final user = Rxn<UserModel>();
   final isLoading = false.obs;
   final accessToken = ''.obs;
+  final refreshToken = ''.obs;
 
   @override
   void onInit() {
@@ -23,6 +24,8 @@ class HomeController extends GetxController {
 
       final data = await IsarService.isar.userModels.where().findFirst();
       final token = await storage.getAccessToken();
+      final refresh = await storage.getRefreshToken();
+      refreshToken.value = refresh ?? '';
       accessToken.value = token ?? '';
 
       user.value = data;
