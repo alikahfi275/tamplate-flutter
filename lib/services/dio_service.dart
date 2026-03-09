@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'storage_service.dart';
+import 'auth_service.dart';
 
 class DioService extends GetxService {
   late final Dio dio;
-  final StorageService storage;
+  final AuthService storage;
 
   bool _isRefreshing = false;
   final List<Completer<void>> _queue = [];

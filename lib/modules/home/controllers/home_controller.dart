@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:tamplate_getx/data/models/user_model.dart';
 import 'package:tamplate_getx/services/isar_service.dart';
-import 'package:tamplate_getx/services/storage_service.dart';
+import 'package:tamplate_getx/services/auth_service.dart';
 
 class HomeController extends GetxController {
-  final StorageService storage = Get.find();
+  final AuthService storage = Get.find();
 
   final user = Rxn<UserModel>();
   final isLoading = false.obs;

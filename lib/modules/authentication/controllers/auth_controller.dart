@@ -2,15 +2,13 @@ import 'package:get/get.dart';
 import 'package:tamplate_getx/core/constants/auth_mapper.dart';
 import 'package:tamplate_getx/data/models/user_model.dart';
 import 'package:tamplate_getx/services/isar_service.dart';
-import 'package:tamplate_getx/services/storage_service.dart';
+import 'package:tamplate_getx/services/auth_service.dart';
 
 import '../../../data/repositories/auth_repository.dart';
 
 class AuthController extends GetxController {
-  final AuthRepository repository;
-  final StorageService storage;
-
-  AuthController(this.repository, this.storage);
+  final AuthRepository repository = Get.find();
+  final AuthService storage = Get.find();
 
   final isLoading = false.obs;
 
