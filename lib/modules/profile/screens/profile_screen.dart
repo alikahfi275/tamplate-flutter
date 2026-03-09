@@ -7,6 +7,10 @@ class ProfileScreen extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.category_rounded),
+        onPressed: () => Get.toNamed('/products'),
+      ),
       body: controller.obx(
         (user) => Column(
           children: [

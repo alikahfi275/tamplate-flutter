@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tamplate_getx/modules/authentication/screens/auth_screen.dart';
+import 'package:tamplate_getx/modules/cart/bindings/cart_binding.dart';
+import 'package:tamplate_getx/modules/cart/screens/cart_screen.dart';
+import 'package:tamplate_getx/modules/cart/screens/product_screen.dart';
 import 'package:tamplate_getx/modules/home/bindings/home_binding.dart';
 import 'package:tamplate_getx/modules/home/screens/home_screen.dart';
 import 'package:tamplate_getx/modules/profile/bindings/profile_binding.dart';
@@ -16,6 +20,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await IsarService.init();
+
+  await GetStorage.init();
 
   runApp(const MyApp());
 }
@@ -53,6 +59,12 @@ class MyApp extends StatelessWidget {
           name: '/profile',
           page: () => ProfileScreen(),
           binding: ProfileBinding(),
+        ),
+        GetPage(name: '/cart', page: () => CartScreen()),
+        GetPage(
+          name: "/products",
+          page: () => ProductScreen(),
+          binding: CartBinding(),
         ),
       ],
     );
