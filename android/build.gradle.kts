@@ -15,24 +15,25 @@ subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
+
+subprojects {
+    afterEvaluate {
+        if (project.hasProperty("android")) {
+            val androidExtension = project.extensions.findByName("android")
+            if (androidExtension is com.android.build.gradle.BaseExtension) {
+                androidExtension.compileSdkVersion = "android-35"
+                androidExtension.buildToolsVersion = "35.0.0"
+                androidExtension.ndkVersion = "27.0.12077973"
+                if (androidExtension.namespace == null) {
+                    androidExtension.namespace = project.group.toString()
+                }
+            }
+        }
+    }
+}
+
 subprojects {
     project.evaluationDependsOn(":app")
-
-    plugins.withId("com.android.library") {
-        extensions.configure<com.android.build.gradle.LibraryExtension>("android") {
-            if (namespace == null) {
-                namespace = project.group.toString()
-            }
-        }
-    }
-
-    plugins.withId("com.android.application") {
-        extensions.configure<com.android.build.gradle.AppExtension>("android") {
-            if (namespace == null) {
-                namespace = project.group.toString()
-            }
-        }
-    }
 }
 
 tasks.register<Delete>("clean") {

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:tamplate_getx/services/auth_service.dart';
+import 'package:tamplate_getx/services/auth_storage_service.dart';
 import 'package:tamplate_getx/services/cart_service.dart';
 import 'package:tamplate_getx/services/dio_service.dart';
 import 'package:tamplate_getx/data/providers/auth_provider.dart';
@@ -9,6 +10,8 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(AuthService(), permanent: true);
+
+    Get.put(AuthStorageService(), permanent: true);
 
     Get.put(DioService(Get.find<AuthService>()), permanent: true);
 
