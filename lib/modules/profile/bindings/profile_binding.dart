@@ -10,12 +10,14 @@ class ProfileBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<AuthService>(() => AuthService());
 
-    Get.lazyPut<DioService>(() => DioService(Get.find()));
+    Get.lazyPut<DioService>(() => DioService(Get.find<AuthService>()));
 
-    Get.lazyPut<AuthProvider>(() => AuthProvider(Get.find()));
+    Get.lazyPut<AuthProvider>(() => AuthProvider(Get.find<DioService>()));
 
-    Get.lazyPut<AuthRepository>(() => AuthRepository(Get.find()));
+    Get.lazyPut<AuthRepository>(() => AuthRepository(Get.find<AuthProvider>()));
 
-    Get.lazyPut<ProfileController>(() => ProfileController(Get.find()));
+    Get.lazyPut<ProfileController>(
+      () => ProfileController(Get.find<AuthRepository>()),
+    );
   }
 }

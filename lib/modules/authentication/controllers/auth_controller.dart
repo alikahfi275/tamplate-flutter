@@ -7,8 +7,10 @@ import 'package:tamplate_getx/services/auth_service.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 class AuthController extends GetxController {
-  final AuthRepository repository = Get.find();
-  final AuthService storage = Get.find();
+  final AuthRepository repository;
+  final AuthService storage;
+
+  AuthController(this.repository, this.storage);
 
   final isLoading = false.obs;
 

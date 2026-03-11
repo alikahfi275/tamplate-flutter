@@ -23,7 +23,7 @@ class SplashController extends GetxController {
 
     final token = await storage.getAccessToken();
 
-    print("Token: $token");
+    print("Token Ada: $token");
 
     if (token != null && token.isNotEmpty) {
       Get.offAllNamed('/home');

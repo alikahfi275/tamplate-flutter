@@ -35,4 +35,10 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> logout() async {
+    await storage.clear();
+
+    Get.offAllNamed('/login');
+  }
 }
