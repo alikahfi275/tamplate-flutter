@@ -1,4 +1,4 @@
-package com.example.tamplate_getx
+package com.akael.tamplate_getx
 
 import io.flutter.embedding.android.FlutterActivity
 
