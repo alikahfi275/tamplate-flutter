@@ -1,16 +1,14 @@
 import 'package:get/get.dart';
+
 import 'package:tamplate_getx/core/constants/auth_mapper.dart';
 import 'package:tamplate_getx/data/models/user_model.dart';
+import 'package:tamplate_getx/data/repositories/api_repository.dart';
 import 'package:tamplate_getx/services/isar_service.dart';
-import 'package:tamplate_getx/services/auth_service.dart';
-
-import '../../../data/repositories/auth_repository.dart';
+import 'package:tamplate_getx/services/token_local_service.dart';
 
 class AuthController extends GetxController {
-  final AuthRepository repository;
-  final AuthService storage;
-
-  AuthController(this.repository, this.storage);
+  final repository = Get.find<ApiRepository>();
+  final localStorage = Get.find<TokenLocalService>();
 
   final isLoading = false.obs;
 
@@ -20,7 +18,7 @@ class AuthController extends GetxController {
 
       final tokens = await repository.login(email: email, password: password);
 
-      await storage.saveTokens(tokens.accessToken, tokens.refreshToken);
+      await localStorage.saveToken(tokens.accessToken, tokens.refreshToken);
 
       final user = toUserModel(tokens);
 
@@ -30,15 +28,15 @@ class AuthController extends GetxController {
 
       Get.offAllNamed('/home');
     } catch (e) {
-      print(e);
       Get.snackbar("Error", e.toString());
+      isLoading.value = false;
     } finally {
       isLoading.value = false;
     }
   }
 
   Future<void> logout() async {
-    await storage.clear();
+    await localStorage.clearToken();
     await IsarService.isar.writeTxn(() async {
       await IsarService.isar.clear();
     });

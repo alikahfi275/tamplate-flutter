@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:tamplate_getx/data/repositories/auth_repository.dart';
+import 'package:tamplate_getx/data/repositories/api_repository.dart';
 
 import 'package:tamplate_getx/modules/authentication/controllers/auth_controller.dart';
 import 'package:tamplate_getx/modules/authentication/screens/auth_screen.dart';

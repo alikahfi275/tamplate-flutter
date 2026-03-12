@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
+
 import 'package:tamplate_getx/data/models/user_api_model.dart';
-import 'package:tamplate_getx/data/repositories/auth_repository.dart';
+import 'package:tamplate_getx/data/repositories/api_repository.dart';
 
 class ProfileController extends GetxController with StateMixin<UserApiModel> {
-  final AuthRepository repository;
-
-  ProfileController(this.repository);
+  final repository = Get.find<ApiRepository>();
 
   Future<void> getProfile() async {
     change(null, status: RxStatus.loading());

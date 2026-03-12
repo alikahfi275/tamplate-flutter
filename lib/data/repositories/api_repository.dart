@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:get/instance_manager.dart';
+
+import 'package:tamplate_getx/data/models/auth_model.dart';
 import 'package:tamplate_getx/data/models/user_api_model.dart';
-import '../models/auth_model.dart';
-import '../providers/auth_provider.dart';
+import 'package:tamplate_getx/data/providers/api_provider.dart';
 
-class AuthRepository {
-  final AuthProvider provider;
-
-  AuthRepository(this.provider);
+class ApiRepository {
+  final provider = Get.find<ApiProvider>();
 
   Future<AuthModel> login({
     required String email,
@@ -18,7 +17,6 @@ class AuthRepository {
 
       return AuthModel.fromJson(data);
     } on DioException catch (e) {
-      debugPrint("ssLogin error: ${e.response?.data}");
       throw Exception(e.response?.data["message"] ?? "Login gagal");
     }
   }
@@ -28,7 +26,6 @@ class AuthRepository {
       final data = await provider.getProfile();
       return UserApiModel.fromJson(data);
     } on DioException catch (e) {
-      debugPrint("ssLogin error: ${e.response?.data}");
       throw Exception(e.response?.data["message"] ?? "Login gagal");
     }
   }

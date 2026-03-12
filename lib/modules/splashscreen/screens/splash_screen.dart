@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+
 import 'package:tamplate_getx/modules/splashscreen/controllers/splash_controller.dart';
 
 class SplashScreen extends GetView<SplashController> {

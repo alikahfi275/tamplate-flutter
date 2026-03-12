@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import 'package:tamplate_getx/data/models/product_model.dart';
 import 'package:tamplate_getx/services/cart_service.dart';
 

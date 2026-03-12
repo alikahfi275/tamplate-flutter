@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
 import 'package:tamplate_getx/data/models/product_model.dart';
 
 class CartService extends GetxService {

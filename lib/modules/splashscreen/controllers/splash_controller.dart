@@ -1,31 +1,23 @@
 import 'package:get/get.dart';
-import 'package:tamplate_getx/services/auth_service.dart';
+
+import 'package:tamplate_getx/services/token_local_service.dart';
 
 class SplashController extends GetxController {
-  final AuthService storage = Get.find();
+  final localStorage = Get.find<TokenLocalService>();
 
   @override
   void onInit() {
     super.onInit();
-    print("SplashController initialized");
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
     checkLogin();
   }
 
   Future<void> checkLogin() async {
-    print("Splash running");
-
     await Future.delayed(const Duration(seconds: 2));
 
-    final token = await storage.getAccessToken();
+    final token = await localStorage.getToken();
+    final accessToken = token?.accessToken ?? '';
 
-    print("Token Ada: $token");
-
-    if (token != null && token.isNotEmpty) {
+    if (accessToken != '' && accessToken.isNotEmpty) {
       Get.offAllNamed('/home');
     } else {
       Get.offAllNamed('/login');

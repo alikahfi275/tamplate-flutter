@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+
 import 'package:tamplate_getx/modules/authentication/controllers/auth_controller.dart';
 
 class AuthScreen extends GetView<AuthController> {

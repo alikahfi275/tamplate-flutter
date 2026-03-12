@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+
 import 'package:tamplate_getx/modules/cart/controllers/cart_controller.dart';
 
 class CartScreen extends GetView<CartController> {

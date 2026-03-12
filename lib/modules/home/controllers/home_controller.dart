@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:tamplate_getx/data/models/user_model.dart';
 import 'package:tamplate_getx/services/isar_service.dart';
-import 'package:tamplate_getx/services/auth_service.dart';
+import 'package:tamplate_getx/services/token_local_service.dart';
 
 class HomeController extends GetxController {
-  final AuthService storage = Get.find();
+  final localStorage = Get.find<TokenLocalService>();
 
   final user = Rxn<UserModel>();
   final isLoading = false.obs;
@@ -23,21 +23,23 @@ class HomeController extends GetxController {
       isLoading.value = true;
 
       final data = await IsarService.isar.userModels.where().findFirst();
-      final token = await storage.getAccessToken();
-      final refresh = await storage.getRefreshToken();
-      refreshToken.value = refresh ?? '';
-      accessToken.value = token ?? '';
+      final token = await TokenLocalService().getToken();
+
+      print("data: $data");
+
+      refreshToken.value = token?.refreshToken ?? '';
+      accessToken.value = token?.accessToken ?? '';
 
       user.value = data;
     } catch (e) {
-      print("Load user error: $e");
+      isLoading.value = false;
     } finally {
       isLoading.value = false;
     }
   }
 
   Future<void> logout() async {
-    await storage.clear();
+    await localStorage.clearToken();
 
     Get.offAllNamed('/login');
   }

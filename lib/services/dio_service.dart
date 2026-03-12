@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'auth_service.dart';
+import 'package:tamplate_getx/services/token_local_service.dart';
 
 class DioService extends GetxService {
   late final Dio dio;
-  final AuthService storage;
+
+  final tokenLocalService = Get.find<TokenLocalService>();
 
   bool _isRefreshing = false;
   final List<Completer<void>> _queue = [];
 
-  DioService(this.storage) {
+  DioService() {
     dio = Dio(
       BaseOptions(
         baseUrl: "https://dummyjson.com",
@@ -31,9 +32,9 @@ class DioService extends GetxService {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await storage.getAccessToken();
-          if (token != null) {
-            options.headers["Authorization"] = "Bearer $token";
+          final token = await tokenLocalService.getToken();
+          if (token?.accessToken != null) {
+            options.headers["Authorization"] = "Bearer ${token?.accessToken}";
           }
           handler.next(options);
         },
@@ -44,10 +45,10 @@ class DioService extends GetxService {
             return handler.next(error);
           }
 
-          final refreshToken = await storage.getRefreshToken();
+          final token = await tokenLocalService.getToken();
 
           /// Kalau tidak ada refresh token → logout
-          if (refreshToken == null) {
+          if (token?.refreshToken == null) {
             await _logout();
             return handler.next(error);
           }
@@ -58,9 +59,10 @@ class DioService extends GetxService {
             _queue.add(completer);
             await completer.future;
 
-            final newToken = await storage.getAccessToken();
+            final newToken = await tokenLocalService.getToken();
 
-            error.requestOptions.headers["Authorization"] = "Bearer $newToken";
+            error.requestOptions.headers["Authorization"] =
+                "Bearer ${newToken?.accessToken}";
 
             final retryResponse = await dio.fetch(error.requestOptions);
 
@@ -75,14 +77,14 @@ class DioService extends GetxService {
 
             final response = await refreshDio.post(
               "/auth/refresh",
-              data: {"refreshToken": refreshToken, "expiresInMins": 1},
+              data: {"refreshToken": token?.refreshToken, "expiresInMins": 1},
             );
 
             final newAccess = response.data["accessToken"];
             final newRefresh = response.data["refreshToken"];
 
             /// Simpan token baru
-            await storage.saveTokens(newAccess, newRefresh);
+            await tokenLocalService.saveToken(newAccess, newRefresh);
 
             /// Release semua request yang ngantri
             for (var completer in _queue) {
@@ -108,7 +110,7 @@ class DioService extends GetxService {
   }
 
   Future<void> _logout() async {
-    await storage.clear();
+    await tokenLocalService.clearToken();
     Get.offAllNamed('/login');
   }
 }

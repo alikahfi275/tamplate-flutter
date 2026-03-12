@@ -1,24 +1,20 @@
-import 'dart:io';
-import 'dart:math';
-import 'package:path_provider/path_provider.dart';
+import 'package:encrypt/encrypt.dart';
 
-class EncryptionKeyService {
-  static const fileName = "isar_key";
+class EncryptionService {
+  final _key = Key.fromUtf8('12345678901234567890123456789012');
+  final _iv = IV.fromLength(16);
 
-  Future<List<int>> getKey() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File("${dir.path}/$fileName");
+  late final Encrypter _encrypter;
 
-    if (await file.exists()) {
-      final keyString = await file.readAsString();
-      return keyString.codeUnits;
-    }
+  EncryptionService() {
+    _encrypter = Encrypter(AES(_key));
+  }
 
-    final random = Random.secure();
-    final key = List<int>.generate(32, (_) => random.nextInt(256));
+  String encryptText(String text) {
+    return _encrypter.encrypt(text, iv: _iv).base64;
+  }
 
-    await file.writeAsString(String.fromCharCodes(key));
-
-    return key;
+  String decryptText(String text) {
+    return _encrypter.decrypt(Encrypted.fromBase64(text), iv: _iv);
   }
 }
