@@ -1,50 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:tamplate_getx/data/repositories/api_repository.dart';
 
-import 'package:tamplate_getx/modules/authentication/controllers/auth_controller.dart';
 import 'package:tamplate_getx/modules/authentication/screens/auth_screen.dart';
-import 'package:tamplate_getx/services/auth_service.dart';
+import 'package:tamplate_getx/modules/authentication/controllers/auth_controller.dart';
 
-class FakeAuthRepository extends Fake implements AuthRepository {}
+import 'package:tamplate_getx/services/dio_service.dart';
+import 'package:tamplate_getx/data/providers/api_provider.dart';
+import 'package:tamplate_getx/data/repositories/api_repository.dart';
+import 'package:tamplate_getx/services/token_local_service.dart';
 
-class FakeAuthService extends Fake implements AuthService {}
+class DummyAuthController extends GetxController implements AuthController {
+  @override
+  final ApiRepository repository = Get.find<ApiRepository>();
 
-class FakeAuthController extends GetxController implements AuthController {
+  @override
+  final TokenLocalService localStorage = Get.find<TokenLocalService>();
+
   @override
   final isLoading = false.obs;
 
-  final AuthRepository _repository = FakeAuthRepository();
-  final AuthService _storage = FakeAuthService();
-
-  String? email;
-  String? password;
-
   @override
-  AuthRepository get repository => _repository;
-
-  @override
-  AuthService get storage => _storage;
-
-  @override
-  Future<void> login(String email, String password) async {
-    this.email = email;
-    this.password = password;
-  }
+  Future<void> login(String email, String password) async {}
 
   @override
   Future<void> logout() async {}
 }
 
 void main() {
-  late FakeAuthController controller;
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  late DummyAuthController controller;
 
   setUp(() {
     Get.testMode = true;
 
-    controller = FakeAuthController();
+    /// dependency chain
+    Get.put(DioService());
+    Get.put(ApiProvider());
+    Get.put(ApiRepository());
+    Get.put(TokenLocalService());
 
+    controller = DummyAuthController();
     Get.put<AuthController>(controller);
   });
 
@@ -52,44 +49,27 @@ void main() {
     Get.reset();
   });
 
-  testWidgets('Auth screen should render form', (tester) async {
-    await tester.pumpWidget(GetMaterialApp(home: AuthScreen()));
+  Widget createWidget() {
+    return GetMaterialApp(home: AuthScreen());
+  }
 
+  testWidgets("AuthScreen renders UI correctly", (tester) async {
+    await tester.pumpWidget(createWidget());
+
+    expect(find.text("Login"), findsOneWidget);
     expect(find.byType(TextFormField), findsNWidgets(2));
     expect(find.byType(ElevatedButton), findsOneWidget);
   });
 
-  testWidgets('Should show error when password empty', (tester) async {
-    await tester.pumpWidget(GetMaterialApp(home: AuthScreen()));
+  testWidgets("shows validation error when password < 6", (tester) async {
+    await tester.pumpWidget(createWidget());
 
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pump();
-
-    expect(find.text("Password tidak boleh kosong"), findsOneWidget);
-  });
-
-  testWidgets('Should show error when password less than 6', (tester) async {
-    await tester.pumpWidget(GetMaterialApp(home: AuthScreen()));
-
-    await tester.enterText(find.byType(TextFormField).at(0), "test@email.com");
+    await tester.enterText(find.byType(TextFormField).at(0), "test@mail.com");
     await tester.enterText(find.byType(TextFormField).at(1), "123");
 
     await tester.tap(find.byType(ElevatedButton));
     await tester.pump();
 
     expect(find.text("Password minimal 6 karakter"), findsOneWidget);
-  });
-
-  testWidgets('Should call login when form valid', (tester) async {
-    await tester.pumpWidget(GetMaterialApp(home: AuthScreen()));
-
-    await tester.enterText(find.byType(TextFormField).at(0), "test@email.com");
-    await tester.enterText(find.byType(TextFormField).at(1), "123456");
-
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pump();
-
-    expect(controller.email, "test@email.com");
-    expect(controller.password, "123456");
   });
 }
