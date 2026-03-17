@@ -30,7 +30,6 @@ class AuthController extends GetxController {
 
       Get.offAllNamed('/home');
     } catch (e) {
-      Get.snackbar("Error", e.toString());
       isLoading.value = false;
     } finally {
       isLoading.value = false;
