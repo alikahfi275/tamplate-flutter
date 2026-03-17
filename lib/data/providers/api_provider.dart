@@ -1,11 +1,9 @@
-import 'package:get/get.dart';
-
 import 'package:tamplate_getx/services/dio_service.dart';
 
 class ApiProvider {
-  final dioService = Get.find<DioService>();
+  final DioService dioService;
 
-  ApiProvider();
+  ApiProvider(this.dioService);
 
   Future<Map<String, dynamic>> postLogin({
     required String email,

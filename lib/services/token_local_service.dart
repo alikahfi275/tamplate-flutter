@@ -5,7 +5,9 @@ import 'package:tamplate_getx/data/models/token_model.dart';
 import 'package:tamplate_getx/services/xor_encryption_service.dart';
 
 class TokenLocalService {
-  final encryption = XorEncryptionService();
+  final XorEncryptionService encryption;
+
+  TokenLocalService(this.encryption);
 
   Future<void> saveToken(String accessToken, String refreshToken) async {
     final isar = IsarService.isar;

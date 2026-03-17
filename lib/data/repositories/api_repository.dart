@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:get/instance_manager.dart';
 
 import 'package:tamplate_getx/data/models/auth_model.dart';
 import 'package:tamplate_getx/data/models/user_api_model.dart';
 import 'package:tamplate_getx/data/providers/api_provider.dart';
 
 class ApiRepository {
-  final provider = Get.find<ApiProvider>();
+  final ApiProvider provider;
+
+  ApiRepository(this.provider);
 
   Future<AuthModel> login({
     required String email,

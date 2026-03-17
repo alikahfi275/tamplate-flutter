@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+
 import 'package:tamplate_getx/services/token_local_service.dart';
 
 class DioService extends GetxService {
   late final Dio dio;
 
-  final tokenLocalService = Get.find<TokenLocalService>();
+  final TokenLocalService tokenLocalService;
 
   bool _isRefreshing = false;
   final List<Completer<void>> _queue = [];
 
-  DioService() {
+  DioService(this.tokenLocalService) {
     dio = Dio(
       BaseOptions(
         baseUrl: "https://dummyjson.com",

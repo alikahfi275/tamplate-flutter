@@ -5,7 +5,9 @@ import 'package:tamplate_getx/services/isar_service.dart';
 import 'package:tamplate_getx/services/token_local_service.dart';
 
 class HomeController extends GetxController {
-  final localStorage = Get.find<TokenLocalService>();
+  final TokenLocalService localStorage;
+
+  HomeController(this.localStorage);
 
   final user = Rxn<UserModel>();
   final isLoading = false.obs;
@@ -23,7 +25,7 @@ class HomeController extends GetxController {
       isLoading.value = true;
 
       final data = await IsarService.isar.userModels.where().findFirst();
-      final token = await TokenLocalService().getToken();
+      final token = await localStorage.getToken();
 
       print("data: $data");
 
