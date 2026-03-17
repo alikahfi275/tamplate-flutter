@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import 'package:tamplate_getx/modules/authentication/controllers/auth_controller.dart';
+
+import 'package:tamplate_getx/core/constants/responsive.dart';
 
 class AuthScreen extends GetView<AuthController> {
   AuthScreen({super.key});
@@ -17,35 +20,45 @@ class AuthScreen extends GetView<AuthController> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
 
-                  const Text(
+                  Text(
                     "Login",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 28.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
 
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
 
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: "Email",
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.radius),
+                        ),
+                      ),
+                      labelStyle: TextStyle(fontSize: 12.sp),
                     ),
+                    style: TextStyle(fontSize: 12.sp),
+
                     validator: (value) {
                       return null;
                     },
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   TextFormField(
                     controller: _passwordController,
@@ -65,7 +78,7 @@ class AuthScreen extends GetView<AuthController> {
                     },
                   ),
 
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30.h),
 
                   Obx(() {
                     return ElevatedButton(
@@ -80,22 +93,22 @@ class AuthScreen extends GetView<AuthController> {
                               }
                             },
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
                       ),
                       child: controller.isLoading.value
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
+                          ? SizedBox(
+                              height: 20.h,
+                              width: 20.w,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
                                 color: Colors.white,
                               ),
                             )
-                          : const Text("Login", style: TextStyle(fontSize: 16)),
+                          : Text("Login", style: TextStyle(fontSize: 16.sp)),
                     );
                   }),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                 ],
               ),
             ),
