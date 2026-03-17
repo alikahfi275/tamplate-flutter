@@ -7,8 +7,10 @@ import 'package:tamplate_getx/services/isar_service.dart';
 import 'package:tamplate_getx/services/token_local_service.dart';
 
 class AuthController extends GetxController {
-  final repository = Get.find<ApiRepository>();
-  final localStorage = Get.find<TokenLocalService>();
+  final ApiRepository repository;
+  final TokenLocalService localStorage;
+
+  AuthController(this.repository, this.localStorage);
 
   final isLoading = false.obs;
 
